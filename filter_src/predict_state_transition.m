@@ -78,7 +78,7 @@ vel_body_next = vel_body + ...
 
 % Predict next orientation
 % The 
-quat_body_next = quat_body * quaternion(rotm2quat(exp(dt*mat_omega)));
+quat_body_next = quat_body * quaternion(rotm2quat(expm(dt*mat_omega)));
 v_quat_body_next = compact(quat_body_next);
 
 %% Set output state vector
