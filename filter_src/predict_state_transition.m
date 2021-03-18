@@ -72,7 +72,8 @@ mat_omega = mat_skew_sym(omega_corrected);
 posn_body_next = posn_body + transpose(dt*(rotatepoint(quat_body, vel_body(:)'))); % TODO: Add w term
 
 % Predict next velocity
-g_rotated = transpose(rotatepoint(quat_body, [0, 0, -1]));
+%g_rotated = transpose(rotatepoint(quat_body, [0, 0, -9.8])); % Gravity acceleration vector
+g_rotated = transpose(rotatepoint(quat_body, [0, 0, 0])); % Turns off gravity
 vel_body_next = vel_body + ...
                 dt*(g_rotated + f_corrected - mat_omega*vel_body);
 
