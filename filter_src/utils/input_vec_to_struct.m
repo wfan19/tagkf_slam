@@ -1,5 +1,8 @@
 function struct_inputs = input_vec_to_struct(v_inputs)
 
+% Force input vector to be column vector
+v_inputs = v_inputs(:);
+
 struct_inputs = struct();
 
 struct_inputs.f = v_inputs(1:3);
