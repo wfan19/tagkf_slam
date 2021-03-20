@@ -41,7 +41,7 @@ Where:
 %% Convert input vectors to structs for sanity
 states = state_vec_to_struct(v_states);
 inputs = input_vec_to_struct(v_inputs);
-states_next = state_vec_to_struct(zeros(30, 1));
+states_next = state_vec_to_struct(zeros(length(v_states), 1));
 
 %% Preprocess data
 % Correct for bias and noise in measurements
@@ -87,10 +87,10 @@ states_next.quat_vb = states.quat_vb;
 % quaternion multiplications
 
 states_next.posn_tag = states.posn_tag;
-%mat_omega_camera = rotatepoint(states.quat_vb, omega_corrected(:)'); % Body angular vel in the camera frame
-%states_next.pos_tag = states.posn_tag + ...
-                        %dt*(-mat_omega_camera * states.posn_tag - ...
-                        %rotatepoint(states.quat_vb, omega_corrected * states.posn_bv) + states.vel_body);
+mat_omega_camera = mat_skew_sym(rotatepoint(states.quat_vb, omega_corrected(:)')); % Body angular vel in the camera frame
+states_next.posn_tag = states.posn_tag + ...
+                        dt*(-mat_omega_camera * states.posn_tag - ...
+                        rotatepoint(states.quat_vb, (mat_omega * states.posn_bv)')' + states.vel_body);
 
 % Predict next tag orientation in the camera frame
 states_next.quat_tag = quaternion([1, 0, 0, 0]);
