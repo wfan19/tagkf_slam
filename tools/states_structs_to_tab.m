@@ -1,4 +1,4 @@
-function tab_states = structs_states_to_tab(structs_states)
+function tab_states = states_structs_to_tab(structs_states)
 % Convert structuer array of state structs to a table
 % 
 % Individual state vectors are transposed. They are kept as column vectors

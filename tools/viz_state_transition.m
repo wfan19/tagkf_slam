@@ -7,7 +7,7 @@ elseif size(mat_inputs, 2) ~= length(structs_states)
     error("Input matrix size incompatible.")
 end
 
-tab_states = structs_states_to_tab(structs_states);
+tab_states = states_structs_to_tab(structs_states);
 
 mat_forces = mat_inputs(1:3, :)';
 
