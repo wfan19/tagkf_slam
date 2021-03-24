@@ -61,10 +61,10 @@ states_next.posn_body = states.posn_body + ...
                     transpose(dt*(rotatepoint(states.quat_body, states.vel_body(:)'))); % TODO: Add w term
 
 % Predict next velocity
-g_rotated = transpose(rotatepoint(states.quat_body, [0, 0, 0])); % Turns off gravity
-%g_rotated = transpose(rotatepoint(quat_body, [0, 0, -9.8])); % Gravity acceleration vector
+g_rotated = transpose(rotatepoint(conj(states.quat_body), [0, 0, 0])); % Turns off gravity
+%g_rotated = transpose(rotatepoint(conj(quat_body), [0, 0, -9.8])); % Gravity acceleration vector
 states_next.vel_body = states.vel_body + ...
-                dt*(g_rotated + f_corrected - mat_omega * states.vel_body);
+            dt*(g_rotated + f_corrected - mat_omega * states.vel_body);
 
 % Predict next orientation
 % - See Equation (56) from Paper (1)
@@ -90,7 +90,7 @@ states_next.posn_tag = states.posn_tag;
 mat_omega_camera = mat_skew_sym(rotatepoint(states.quat_vb, omega_corrected(:)')); % Body angular vel in the camera frame
 states_next.posn_tag = states.posn_tag + ...
                         dt*(-mat_omega_camera * states.posn_tag - ...
-                        rotatepoint(states.quat_vb, (mat_omega * states.posn_bv)')' + states.vel_body);
+                        rotatepoint(states.quat_vb, (mat_omega * states.posn_bv)')' - states.vel_body);
 
 % Predict next tag orientation in the camera frame
 states_next.quat_tag = quaternion([1, 0, 0, 0]);
