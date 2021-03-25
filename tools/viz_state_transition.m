@@ -28,5 +28,8 @@ quiver3(tab_states.posn_body(:, 1), tab_states.posn_body(:, 2), tab_states.posn_
 
 grid on
 axis equal
+xlabel("X")
+ylabel("Y")
+zlabel("Z")
 
 end
