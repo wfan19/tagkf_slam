@@ -1,4 +1,4 @@
-function v_states_next = predict_state_transition_discrete(v_states, v_inputs, ~, dt)
+function v_states_next = predict_state_transition_ode45(v_states, v_inputs, ~, dt)
 % Function input:
 %   states_now: states x 1 column vector of current states
 %   u: 6 x 1 column vector of IMU measurements
@@ -87,13 +87,6 @@ states_next.bias_omega = states.bias_omega;
 states_next.posn_bv = states.posn_bv;
 states_next.quat_vb = states.quat_vb;
 
-% Predict next tag position in the camera frame
-% Equation (13) from simplifies to this if you distribute out matrix and
-% quaternion multiplications
-states_next.posn_tag = states.posn_tag + ...
-                        dt*(-mat_omega_camera * states.posn_tag - ...
-                        rotatepoint(states.quat_vb, (mat_omega * states.posn_bv)')' - states.vel_body);
-
 % Predict next tag orientation in the camera frame
 states_next.quat_tag = quaternion([1, 0, 0, 0]);
 
@@ -117,7 +110,8 @@ states_next.quat_tag = quaternion([1, 0, 0, 0]);
         % Predict next tag position in the camera frame
         % Equation (13) from simplifies to this if you distribute out matrix and
         % quaternion multiplications
-        struct_rates.posn_tag = -mat_omega_camera * struct_states.posn_tag - rotatepoint(struct_states.quat_vb, (mat_omega * struct_states.posn_bv)')' - struct_states.vel_body;
+        struct_rates.posn_tag = -mat_omega_camera * struct_states.posn_tag - ...
+            rotatepoint(struct_states.quat_vb, (mat_omega * struct_states.posn_bv )')' - struct_states.vel_body;
         
         rates = state_struct_to_vec(struct_rates);
     end
