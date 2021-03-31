@@ -1,4 +1,4 @@
-function v_states_next = predict_state_transition(v_states, v_inputs, ~, dt)
+function v_states_next = predict_state_transition(v_states, ~, v_inputs, dt)
 % Function input:
 %   states_now: states x 1 column vector of current states
 %   u: 6 x 1 column vector of IMU measurements
@@ -90,7 +90,7 @@ states_next.posn_tag = states.posn_tag;
 mat_omega_camera = mat_skew_sym(rotatepoint(states.quat_vb, omega_corrected(:)')); % Body angular vel in the camera frame
 states_next.posn_tag = states.posn_tag + ...
                         dt*(-mat_omega_camera * states.posn_tag - ...
-                        rotatepoint(states.quat_vb, (mat_omega * states.posn_bv)')') - states.vel_body;
+                        rotatepoint(states.quat_vb, (mat_omega * states.posn_bv)' + states.vel_body')');
 
 % Predict next tag orientation in the camera frame
 states_next.quat_tag = quaternion([1, 0, 0, 0]);
