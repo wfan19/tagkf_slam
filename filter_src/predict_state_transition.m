@@ -93,7 +93,7 @@ states_next.posn_tag = states.posn_tag + ...
                         rotatepoint(states.quat_vb, (mat_omega * states.posn_bv)' + states.vel_body')');
 
 % Predict next tag orientation in the camera frame
-states_next.quat_tag = quaternion([1, 0, 0, 0]);
+states_next.quat_tag = states.quat_tag * quaternion(rotm2quat(expm(-dt * mat_skew_sym(rotatepoint(states.quat_vb, omega_corrected')))));
 
 %% Generate output state vector
 

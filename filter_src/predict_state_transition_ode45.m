@@ -23,7 +23,7 @@ Where:
 - q_wb [w, x, y, z] is the rotation from the body frame to the world frame
 - b_f [x, y, z] is gyro linear acceleration bias
 - b_omega [x, y, z] is the gyro angular rate bias
-- r_bv [x, y, z] is the estimated extrinsic positional offset from the IMU to the camera
+- r_bv [x, y, z] is the estimated extrinsic positional offset from the IMU to the camera in the camera frame
 - q_vb [w, x, y, z] is the estimated extrinsic orientation offset from the body to the camera
 - r_v-Ti [x, y, z] is the i-th tag position in the camera frame
 - q_Ti-v [w, x, y, z] is the i-th tag quaternion in the camera frame
@@ -88,7 +88,7 @@ states_next.posn_bv = states.posn_bv;
 states_next.quat_vb = states.quat_vb;
 
 % Predict next tag orientation in the camera frame
-states_next.quat_tag = quaternion([1, 0, 0, 0]);
+states_next.quat_tag = states.quat_tag * quaternion(rotm2quat(expm(-dt * mat_omega_camera)));
 
 %% ode45 Rate Equation
 % - The continuous state transition model for a 6DOF object and the tags in
