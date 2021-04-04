@@ -22,7 +22,7 @@ end
 
 for i = 1 : size(mat_inputs, 2)
     
-    v_state_next = f_predict(mat_states(:, i), mat_inputs(:, i), 0, dt);
+    v_state_next = f_predict(mat_states(:, i), 0, mat_inputs(:, i), dt);
     
     mat_states(:, i+1) = v_state_next;
     
