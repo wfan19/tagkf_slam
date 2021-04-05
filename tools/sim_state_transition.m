@@ -19,7 +19,8 @@ end
 % Run the simulation
 for i = 1 : size(mat_inputs, 2)
     t(i+1) = i*dt;
-    structs_states(1, i+1) = f_predict(structs_states(1, i), 0, mat_inputs(:, i), dt);
+    struct_input = input_vec_to_struct(mat_inputs(:, i));
+    structs_states(1, i+1) = f_predict(structs_states(1, i), 0, struct_input, dt);
 end
 
 end
