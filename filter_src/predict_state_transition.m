@@ -1,4 +1,4 @@
-function states_next = predict_state_transition(states, ~, v_inputs, dt)
+function states_next = predict_state_transition(states, ~, inputs, dt)
 % Function input:
 %   states_now: states x 1 column vector of current states
 %   u: 6 x 1 column vector of IMU measurements
@@ -39,7 +39,6 @@ Where:
 %}
 
 %% Convert input vectors to structs for sanity
-inputs = input_vec_to_struct(v_inputs);
 states_next = state_vec_to_struct(zeros(length(v_states), 1));
 
 %% Preprocess data

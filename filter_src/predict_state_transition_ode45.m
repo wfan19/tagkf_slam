@@ -1,4 +1,4 @@
-function states_next = predict_state_transition_ode45(states, ~, v_inputs, dt)
+function states_next = predict_state_transition_ode45(states, ~, inputs, dt)
 % Function input:
 %   states_now: states x 1 column vector of current states
 %   u: 6 x 1 column vector of IMU measurements
@@ -37,9 +37,6 @@ Where:
 - omega [x, y, z] is angular velocity of the body in the body frame
 
 %}
-
-%% Convert input vectors to structs for sanity
-inputs = input_vec_to_struct(v_inputs);
 
 %% Preprocess data
 % Correct for bias and noise in measurements
