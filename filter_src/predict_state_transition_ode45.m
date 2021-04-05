@@ -1,4 +1,4 @@
-function v_states_next = predict_state_transition_ode45(v_states, v_noise, v_inputs, dt)
+function states_next = predict_state_transition_ode45(states, ~, v_inputs, dt)
 % Function input:
 %   states_now: states x 1 column vector of current states
 %   u: 6 x 1 column vector of IMU measurements
@@ -39,7 +39,6 @@ Where:
 %}
 
 %% Convert input vectors to structs for sanity
-states = state_vec_to_struct(v_states);
 inputs = input_vec_to_struct(v_inputs);
 
 %% Preprocess data
@@ -68,6 +67,7 @@ g_rotated = transpose(rotatepoint(conj(states.quat_body), [0, 0, 0])); % Turns o
 % - Body position and velocity
 % - Tag positions
 % This will (hopefully) remove discretization errors from Euler integration
+v_states = state_struct_to_vec(states); % Convert struct to vec for ode45
 [~, mat_states] = ode45(@continuous_state_trans, [0, dt], v_states);
 states_next = state_vec_to_struct(mat_states(end, :));
 
@@ -115,9 +115,6 @@ states_next.quat_tag = states.quat_tag * quaternion(rotm2quat(expm(-dt * mat_ome
         
         rates = state_struct_to_vec(struct_rates);
     end
-
-%% Generate output state vector
-v_states_next = state_struct_to_vec(states_next);
 
 end
 
